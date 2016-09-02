@@ -38,12 +38,13 @@ public class SupporterTagsRenderer extends DefaultTableCellRenderer {
 			tokenizer.nextToken();
 
 			while (tokenizer.hasMoreTokens()) {
-				srcString += "<img src=" + supporterTagsURL.get(tokenizer.nextToken()) + ">";
+				String token = tokenizer.nextToken();
+				srcString += "<img border=1 src=" + supporterTagsURL.get(token) + ">";
 				if (tokenizer.hasMoreTokens())
 					srcString += "<br>";
 			}
 
-			setToolTipText("<html>" + srcString);
+			setToolTipText("<html><div style='text-align:center;'>" + srcString);
 		} else {
 			// setToolTipText("This Account does not have any SupporterTags
 			setToolTipText(null);
