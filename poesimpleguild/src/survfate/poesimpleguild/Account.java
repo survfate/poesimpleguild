@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
 
@@ -15,9 +14,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.RequestBody;
 
@@ -45,8 +41,8 @@ public class Account {
 				url.getQuery(), url.getRef());
 
 		// Parsing account details using Jsoup and OkHttp
-		Document jsoupDoc = Jsoup.parse(HttpClient.runURL(uri.toASCIIString()));
-		details = jsoupDoc.getElementsByClass("details").first();
+		Document accountDoc = Jsoup.parse(HttpClient.runURL(uri.toASCIIString()));
+		details = accountDoc.getElementsByClass("details").first();
 
 		this.joined = dateFormat.parse(details.child(3).childNode(3).toString().trim());
 		this.lastVisited = dateFormat.parse(details.child(4).childNode(3).toString().trim());
@@ -81,33 +77,9 @@ public class Account {
 
 	// Return the last ladder online date of an account from all the characters,
 	// using api.exiletools.com
-	public Date getLastLadderOnline() throws IOException {
-		lastLadderOnline = new Date(0);
-
-		try {
-			JsonObject jsonObject = Json
-					.parse(HttpClient
-							.runURL("http://api.exiletools.com/ladder?league=all&short=1&account=" + this.profile))
-					.asObject();
-
-			// Find the lastest date
-			for (String charName : jsonObject.names()) {
-				int epochSecond = 0;
-				JsonValue jsonValue = jsonObject.get(charName);
-				if (jsonValue.asObject().get("lastOnline") != null) {
-					epochSecond = Integer.parseInt(jsonValue.asObject().get("lastOnline").asString());
-				}
-
-				// Epoch Timestamp to Human
-				Date lastOnlineHuman = Date.from(Instant.ofEpochSecond(epochSecond));
-				if (lastOnlineHuman.after(lastLadderOnline)) {
-					this.lastLadderOnline = lastOnlineHuman;
-				}
-			}
-		} catch (com.eclipsesource.json.ParseException e) {
-			// Account without Ladder data
-			return this.lastLadderOnline;
-		}
+	public Date getLastLadderTracked() throws IOException, ParseException {
+		PoeStatistics lastLadderTracked = new PoeStatistics(profile);
+		this.lastLadderOnline = lastLadderTracked.getAccountLastTrackedDate();
 		return this.lastLadderOnline;
 	}
 

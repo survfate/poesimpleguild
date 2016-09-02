@@ -11,23 +11,29 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import survfate.poesimpleguild.HttpClient;
+import survfate.poesimpleguild.MainClass;
+import survfate.poesimpleguild.ui.MainPanel;
+
 public class ResourcesLoader {
 	public static Font robotoFont;
-	public static ImageIcon[] challengeIcon = new ImageIcon[41];
+	public static ImageIcon[] challengeIcon = new ImageIcon[46];
 	public static HashMap<String, URL> supporterTagsURL = new HashMap<String, URL>();
 
 	public void loadFont() throws FontFormatException, IOException {
 		// Load Roboto Font
-		URL robotoFontURL = new URL(
-				"https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Regular.ttf");
-		robotoFont = Font.createFont(Font.TRUETYPE_FONT, robotoFontURL.openStream());
+		robotoFont = Font.createFont(Font.TRUETYPE_FONT,
+				ResourcesLoader.class.getResourceAsStream("Roboto-Regular.ttf"));
 	}
 
 	public void loadChallengeIcons() throws MalformedURLException {
 		// Load Challenge Icons
 		URL[] challengeIconURL = new URL[41];
 		for (int i = 1; i <= 40; i++) {
-			challengeIconURL[i] = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/icons/achievements/" + i + ".png?v=8");
+			challengeIconURL[i] = new URL("http://web.poecdn.com/image/icons/achievements/" + i + ".png?v=10");
 			challengeIcon[i] = new ImageIcon(challengeIconURL[i]);
 		}
 	}
@@ -35,49 +41,57 @@ public class ResourcesLoader {
 	public void loadSupporterTagImages() throws MalformedURLException {
 		// Load SupporterTag Images
 		/* Close Beta */
-		URL default_supporter = new URL(
-				"https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/default_supporter.png?v=2");
-		URL bronze_supporter = new URL(
-				"https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/bronze_supporter.png?v=2");
-		URL silver_supporter = new URL(
-				"https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/silver_supporter.png?v=2");
-		URL gold_supporter = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/gold_supporter.png?v=2");
-		URL diamond_supporter = new URL(
-				"https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/diamond_supporter.png?v=2");
+		URL default_supporter = new URL("http://web.poecdn.com/image/forum/supporter-tag/default_supporter.png?v=2");
+		URL bronze_supporter = new URL("http://web.poecdn.com/image/forum/supporter-tag/bronze_supporter.png?v=2");
+		URL silver_supporter = new URL("http://web.poecdn.com/image/forum/supporter-tag/silver_supporter.png?v=2");
+		URL gold_supporter = new URL("http://web.poecdn.com/image/forum/supporter-tag/gold_supporter.png?v=2");
+		URL diamond_supporter = new URL("http://web.poecdn.com/image/forum/supporter-tag/diamond_supporter.png?v=2");
 
 		/* Open Beta */
-		URL open_beta = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/open-beta/open-beta.png?v=2");
-		URL regal = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/open-beta/regal.png?v=2");
-		URL divine = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/open-beta/divine.png?v=2");
-		URL exalted = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/open-beta/exalted.png?v=2");
-		URL eternal = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/open-beta/eternal.png?v=2");
+		URL open_beta = new URL("http://web.poecdn.com/image/forum/supporter-tag/open-beta/open-beta.png?v=2");
+		URL regal = new URL("http://web.poecdn.com/image/forum/supporter-tag/open-beta/regal.png?v=2");
+		URL divine = new URL("http://web.poecdn.com/image/forum/supporter-tag/open-beta/divine.png?v=2");
+		URL exalted = new URL("http://web.poecdn.com/image/forum/supporter-tag/open-beta/exalted.png?v=2");
+		URL eternal = new URL("http://web.poecdn.com/image/forum/supporter-tag/open-beta/eternal.png?v=2");
 		URL ruler_of_wraeclast = new URL(
-				"https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/open-beta/ruler-of-wraeclast.png?v=2");
+				"http://web.poecdn.com/image/forum/supporter-tag/open-beta/ruler-of-wraeclast.png?v=2");
 
 		/* Sacrifice of the Vaal */
-		URL survivor = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/release/survivor.png?v=4");
-		URL warrior = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/release/warrior.png?v=4");
-		URL champion = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/release/champion.png?v=4");
-		URL conqueror = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/release/conqueror.png?v=4");
+		URL survivor = new URL("http://web.poecdn.com/image/forum/supporter-tag/release/survivor.png?v=4");
+		URL warrior = new URL("http://web.poecdn.com/image/forum/supporter-tag/release/warrior.png?v=4");
+		URL champion = new URL("http://web.poecdn.com/image/forum/supporter-tag/release/champion.png?v=4");
+		URL conqueror = new URL("http://web.poecdn.com/image/forum/supporter-tag/release/conqueror.png?v=4");
 
 		/* Forsaken Masters */
-		URL apprentice = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/release2/Apprentice.png");
-		URL journeyman = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/release2/Journeyman.png");
-		URL master = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/release2/Master.png");
-		URL grandmaster = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/release2/Grandmaster.png");
+		URL apprentice = new URL("http://web.poecdn.com/image/forum/supporter-tag/release2/Apprentice.png");
+		URL journeyman = new URL("http://web.poecdn.com/image/forum/supporter-tag/release2/Journeyman.png");
+		URL master = new URL("http://web.poecdn.com/image/forum/supporter-tag/release2/Master.png");
+		URL grandmaster = new URL("http://web.poecdn.com/image/forum/supporter-tag/release2/Grandmaster.png");
 
 		/* The Awakening */
-		URL awakening = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/awakening/Awakening.png");
-		URL axiom = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/awakening/Axiom.png");
-		URL vaal = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/awakening/Vaal.png");
-		URL lunaris = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/awakening/Lunaris.png");
-		URL highgate = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/awakening/Highgate.png");
+		URL awakening = new URL("http://web.poecdn.com/image/forum/supporter-tag/awakening/Awakening.png");
+		URL axiom = new URL("http://web.poecdn.com/image/forum/supporter-tag/awakening/Axiom.png");
+		URL vaal = new URL("http://web.poecdn.com/image/forum/supporter-tag/awakening/Vaal.png");
+		URL lunaris = new URL("http://web.poecdn.com/image/forum/supporter-tag/awakening/Lunaris.png");
+		URL highgate = new URL("http://web.poecdn.com/image/forum/supporter-tag/awakening/Highgate.png");
 
 		/* Ascendancy */
-		URL aspirant = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/ascendancy/Aspirant.png");
-		URL challenger = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/ascendancy/Challenger.png");
-		URL sovereign = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/ascendancy/Sovereign.png");
-		URL ascendant = new URL("https://p7p4m6s5.ssl.hwcdn.net/image/forum/supporter-tag/ascendancy/Ascendant.png");
+		URL aspirant = new URL("http://web.poecdn.com/image/forum/supporter-tag/ascendancy/Aspirant.png");
+		URL challenger = new URL("http://web.poecdn.com/image/forum/supporter-tag/ascendancy/Challenger.png");
+		URL sovereign = new URL("http://web.poecdn.com/image/forum/supporter-tag/ascendancy/Sovereign.png");
+		URL ascendant = new URL("http://web.poecdn.com/image/forum/supporter-tag/ascendancy/Ascendant.png");
+
+		/* Prophecy */
+		URL prophecy = new URL("http://web.poecdn.com/image/forum/supporter-tag/prophecy/Prophecy.png");
+
+		/* Atlas of Worlds */
+		URL minotaur_supporter = new URL(
+				"http://web.poecdn.com/image/forum/supporter-tag/atlas/minotaur_supporter.png?v=2");
+		URL hydra_supporter = new URL("http://web.poecdn.com/image/forum/supporter-tag/atlas/hydra_supporter.png?v=2");
+		URL chimera_supporter = new URL(
+				"http://web.poecdn.com/image/forum/supporter-tag/atlas/chimera_supporter.png?v=2");
+		URL phoenix_supporter = new URL(
+				"http://web.poecdn.com/image/forum/supporter-tag/atlas/phoenix_supporter.png?v=2");
 
 		/* Put them in */
 		supporterTagsURL.put("default_supporter", default_supporter);
@@ -113,7 +127,18 @@ public class ResourcesLoader {
 		supporterTagsURL.put("challenger", challenger);
 		supporterTagsURL.put("sovereign", sovereign);
 		supporterTagsURL.put("ascendant", ascendant);
+
+		supporterTagsURL.put("prophecy", prophecy);
+
+		supporterTagsURL.put("minotaur_supporter", minotaur_supporter);
+		supporterTagsURL.put("hydra_supporter", hydra_supporter);
+		supporterTagsURL.put("chimera_supporter", chimera_supporter);
+		supporterTagsURL.put("phoenix_supporter", phoenix_supporter);
 	}
+
+	// public static List<String> supporterTagsScaled =
+	// Arrays.asList("prophecy", "minotaur_supporter", "hydra_supporter",
+	// "chimera_supporter", "phoenix_supporter");
 
 	public ResourcesLoader() throws FontFormatException, IOException {
 		loadFont();
@@ -139,5 +164,51 @@ public class ResourcesLoader {
 		};
 		loaderWorker.execute();
 		dialog.setVisible(true);
+	}
+
+	public static class StatusLoadWorker extends SwingWorker<Void, Void> {
+		@Override
+		protected Void doInBackground() throws IOException  {
+			// Change stuff during load
+			MainPanel.menuLoadStatus.setEnabled(false);
+			MainPanel.poeStatisticsStatus.setText("Loading");
+			MainPanel.poeTradeStatus.setText("Loading");
+			MainPanel.lastestVersion.setText("Loading");
+
+			if (HttpClient.testURL("http://poestatistics.com")) {
+				MainPanel.poeStatisticsStatus.setText("<html><b><font color='green'>Online</font></b></html>");
+				MainPanel.checkBoxMenuItemPoeStatistics.setSelected(true);
+				MainPanel.checkBoxMenuItemPoeStatistics.setEnabled(true);
+			} else {
+				MainPanel.poeStatisticsStatus.setText("<html><b><font color='red'>Offline</font></b></html>");
+				MainPanel.checkBoxMenuItemPoeStatistics.setSelected(false);
+				MainPanel.checkBoxMenuItemPoeStatistics.setEnabled(false);
+			}
+
+			if (HttpClient.testURL("http://poe.trade"))
+				MainPanel.poeTradeStatus.setText("<html><b><font color='green'>Online</font></b></html>");
+			else
+				MainPanel.poeTradeStatus.setText("<html><b><font color='red'>Offline</font></b></html>");
+
+			// Dirty code instead of using GitHub API
+			if (HttpClient.testURL("https://github.com/survfate/poesimpleguild/releases")) {
+				Document githubDoc = Jsoup
+						.parse(HttpClient.runURL("https://github.com/survfate/poesimpleguild/releases"));
+				String lastestVersion = githubDoc.getElementsByClass("release-meta").first()
+						.getElementsByClass("tag-references").first().child(0).child(0).attr("href").substring(30);
+				String lastestVersionHTML = (lastestVersion.equals(MainClass.VERSION))
+						// if (current) VERSION matched lastestVersion
+						? "<html><b><font color='green'>" + lastestVersion + "</font></b></html>"
+						// else
+						: "<html><b><font color='red'>" + lastestVersion + "</font></b></html>";
+				MainPanel.lastestVersion.setText(lastestVersionHTML);
+			}
+			return null;
+		}
+
+		@Override
+		protected void done() {
+			MainPanel.menuLoadStatus.setEnabled(true);
+		}
 	}
 }
