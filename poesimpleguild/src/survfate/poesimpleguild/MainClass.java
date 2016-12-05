@@ -14,7 +14,7 @@ import survfate.poesimpleguild.resources.ResourcesLoader.StatusLoadWorker;
 import survfate.poesimpleguild.ui.MainPanel;
 
 public class MainClass {
-	public static String VERSION = "v0.1.5";
+	public static String VERSION = "v0.1.5.1";
 
 	public static void main(String args[]) {
 		SwingUtilities.invokeLater(new Runnable() {

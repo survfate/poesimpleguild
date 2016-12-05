@@ -33,7 +33,7 @@ public class ResourcesLoader {
 		// Load Challenge Icons
 		URL[] challengeIconURL = new URL[41];
 		for (int i = 1; i <= 40; i++) {
-			challengeIconURL[i] = new URL("http://web.poecdn.com/image/icons/achievements/" + i + ".png?v=10");
+			challengeIconURL[i] = new URL("http://web.poecdn.com/image/icons/achievements/" + i + ".png?v=11");
 			challengeIcon[i] = new ImageIcon(challengeIconURL[i]);
 		}
 	}
@@ -93,6 +93,10 @@ public class ResourcesLoader {
 		URL phoenix_supporter = new URL(
 				"http://web.poecdn.com/image/forum/supporter-tag/atlas/phoenix_supporter.png?v=2");
 
+		/* Breach */
+		URL breachspawn = new URL("https://web.poecdn.com/image/forum/supporter-tag/breach/Breachspawn.png");
+		URL breachlord = new URL("https://web.poecdn.com/image/forum/supporter-tag/breach/Breachlord.png");
+
 		/* Put them in */
 		supporterTagsURL.put("default_supporter", default_supporter);
 		supporterTagsURL.put("bronze_supporter", bronze_supporter);
@@ -134,6 +138,9 @@ public class ResourcesLoader {
 		supporterTagsURL.put("hydra_supporter", hydra_supporter);
 		supporterTagsURL.put("chimera_supporter", chimera_supporter);
 		supporterTagsURL.put("phoenix_supporter", phoenix_supporter);
+
+		supporterTagsURL.put("breachspawn", breachspawn);
+		supporterTagsURL.put("breachlord", breachlord);
 	}
 
 	// public static List<String> supporterTagsScaled =
@@ -168,7 +175,7 @@ public class ResourcesLoader {
 
 	public static class StatusLoadWorker extends SwingWorker<Void, Void> {
 		@Override
-		protected Void doInBackground() throws IOException  {
+		protected Void doInBackground() throws IOException {
 			// Change stuff during load
 			MainPanel.menuLoadStatus.setEnabled(false);
 			MainPanel.poeStatisticsStatus.setText("Loading");

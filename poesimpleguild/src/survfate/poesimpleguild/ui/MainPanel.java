@@ -286,7 +286,7 @@ public class MainPanel extends JPanel implements ActionListener {
 
 		checkBoxMenuItemPoeStatistics = new JCheckBoxMenuItem("Load PoeStatistics.com Last Ladder Tracked Data");
 		menuOption.add(checkBoxMenuItemPoeStatistics);
-		checkBoxMenuItemPoeTrade = new JCheckBoxMenuItem("Poe.Trade Online Check (WARNING: Slow!)");
+		checkBoxMenuItemPoeTrade = new JCheckBoxMenuItem("Poe.Trade Online Check (WARNING: SLOW!)");
 		menuOption.add(checkBoxMenuItemPoeTrade);
 		checkBoxMenuItemAutoFit = new JCheckBoxMenuItem("Fit All Columns On Complete");
 		menuOption.add(checkBoxMenuItemAutoFit);
@@ -591,9 +591,9 @@ public class MainPanel extends JPanel implements ActionListener {
 		@Override
 		public void run() {
 			//
-			String accountName = member.child(0).text().trim();
-			String title = (member.child(0).child(0).childNodeSize() == 2)
-					? member.child(0).child(0).child(0).attr("title") : null;
+			String accountName = member.child(0).child(0).text().trim();
+			String title = (member.child(0).child(0).child(0).childNodeSize() == 2)
+					? member.child(0).child(0).child(0).child(0).attr("title") : null;
 			int challengeNums = (title == null) ? 0
 					: Integer.parseInt(new StringTokenizer(title).nextToken("Completed").trim());
 
@@ -609,7 +609,7 @@ public class MainPanel extends JPanel implements ActionListener {
 				StringTokenizer tokenizer = new StringTokenizer(account.getSupporterTagKeys());
 				String tagKeys = (account.getSupporterTagKeys() != "")
 						? String.valueOf(tokenizer.countTokens()) + " " + account.getSupporterTagKeys() : null;
-				String memberType = member.child(1).text().trim() + " " + account.getStatus();
+				String memberType = member.child(0).child(1).text().trim() + " " + account.getStatus();
 				boolean poeTradeOnline = (checkBoxMenuItemPoeTrade.isSelected() == true)
 						? account.getPoeTradeOnlineStatus() : false;
 				URL profileURL = account.getURL();
@@ -617,6 +617,7 @@ public class MainPanel extends JPanel implements ActionListener {
 						lastVisitedDate, lastLadderTracked, tagKeys, poeTradeOnline, profileURL });
 			} catch (ParseException | URISyntaxException | IOException e) {
 				e.printStackTrace();
+				System.out.println(accountName);
 			}
 		}
 	}

@@ -43,10 +43,13 @@ public class Account {
 		// Parsing account details using Jsoup and OkHttp
 		Document accountDoc = Jsoup.parse(HttpClient.runURL(uri.toASCIIString()));
 		details = accountDoc.getElementsByClass("details").first();
+		boolean privateProfile = details.child(3).childNode(1).childNode(0).toString().equals("Joined:");
 
-		this.joined = dateFormat.parse(details.child(3).childNode(3).toString().trim());
-		this.lastVisited = dateFormat.parse(details.child(4).childNode(3).toString().trim());
-		this.forumPosts = Integer.parseInt(details.child(5).childNode(3).toString().trim());
+		int childNum = privateProfile ? 3 : 2;
+		this.joined = dateFormat.parse(details.child(childNum).childNode(3).toString().trim());
+		this.lastVisited = (details.child(childNum + 1).childNode(3).toString().trim().equals("")) ? null
+				: dateFormat.parse(details.child(childNum + 1).childNode(3).toString().trim());
+		this.forumPosts = Integer.parseInt(details.child(childNum + 2).childNode(3).toString().trim());
 	}
 
 	/* Methods */
