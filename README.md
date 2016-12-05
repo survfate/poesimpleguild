@@ -1,6 +1,6 @@
-# PoESimpleGuild
+# PoESimpleGuild (Breach Update)
 
-![screenshot](https://cloud.githubusercontent.com/assets/10634948/13550005/c0c4c9aa-e345-11e5-8f48-1a1d538fe2b5.png)
+![screenshot](https://cloud.githubusercontent.com/assets/10634948/20896454/6b453fe4-bb50-11e6-9804-c132ed6f3ab0.png)
 
 A simple Guild management tool for the game Path of Exile. Written in Java.
 
